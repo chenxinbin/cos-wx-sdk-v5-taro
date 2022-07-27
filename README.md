@@ -2,6 +2,23 @@
 
 微信小程序 SDK for [腾讯云对象存储服务](https://cloud.tencent.com/product/cos)
 
+### 如何让原版模块支持TARO？
+
+1. 在支付宝开发平台，把bucket域名添加到服务器域名白名单，比如我添加的域名是这样的： *****.cos.ap-guangzhou.myqcloud.com。
+2. 修改项目目录下 /config/index.js,在mini节点下添加如下代码。(Taro官方文档说明：https://taro-docs.jd.com/taro/docs/envs 解析 node_modules 内的多端文件)
+
+```javascript
+
+     webpackChain (chain) {
+      // Taro 3.3+
+      chain.resolve.plugin('MultiPlatformPlugin')
+        .tap(args => {
+           args[2]["include"] = ['cos-wx-sdk-v5-taro']
+           return args
+        })
+    },
+```
+
 ### 一、前期准备
 
 1. 到 (COS对象存储控制台)[https://console.cloud.tencent.com/cos4] 创建存储桶，得到 Bucket（存储桶名称） 和 Region（地域名称）
